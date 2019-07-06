@@ -6,7 +6,6 @@ import collections
 from .bitindex3 import BitIndex3
 
 DEFAULT_TIMEOUT = 30
-BSV_TO_SAT_MULTIPLIER = 100000000
 DEFAULT_RETRY = 3
 IGNORED_ERRORS = (ConnectionError,
                   requests.exceptions.ConnectionError,
@@ -67,11 +66,12 @@ def retry_annotation(exception_to_check, tries=3, delay=1, backoff=2, logger=Non
 
 class BitIndex3Normalized(BitIndex3):
 
-    def __init__(self, api_key=None, network="main"):
+    def __init__(self, api_key=None, network="main", timeout=DEFAULT_TIMEOUT):
         self.api_key = api_key
         self.network = network
         self.headers = self._get_headers()
         self.authorized_headers = self._get_authorized_headers()
+        self.timeout = timeout
 
     def _get_headers(self):
         return {
@@ -106,7 +106,7 @@ class NetworkAPI:
         self.network = network
 
         # Instantiate Normalized apis
-        self.bitindex3 = BitIndex3Normalized(api_key=None, network=self.network)
+        self.bitindex3 = BitIndex3Normalized(api_key=None, network=self.network, timeout=DEFAULT_TIMEOUT)
         #Example: self.whatsonchain = WhatsonchainNormalized(network=network) - https://developers.whatsonchain.com/
         #Example: self.blockchair = BlockchairNormalized(network=network) - https://github.com/Blockchair/Blockchair.Support
 

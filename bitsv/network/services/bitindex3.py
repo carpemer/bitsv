@@ -12,11 +12,12 @@ class BitIndex3:
     :type network: ``str``
     """
 
-    def __init__(self, api_key, network='main'):
+    def __init__(self, api_key, network='main', timeout=30):
         self.api_key = api_key
         self.network = network
         self.headers = self._get_headers()
         self.authorized_headers = self._get_authorized_headers()
+        self.timeout = timeout
 
     def _get_headers(self):
         return {
@@ -50,6 +51,7 @@ class BitIndex3:
             params=params,
             data=json.dumps({'addrs': address}),
             headers=self.headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return [Unspent(
@@ -69,6 +71,7 @@ class BitIndex3:
         r = requests.get(
             f'https://api.bitindex.network/api/v3/{self.network}/addr/{address}',
             headers=self.headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -103,6 +106,7 @@ class BitIndex3:
                 "noSpent": no_spent,
             }),
             headers=self.headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -117,6 +121,7 @@ class BitIndex3:
             f'https://api.bitindex.network/api/v3/{self.network}/tx/send',
             data=json.dumps({'rawtx': raw_transaction}),
             headers=self.headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -130,6 +135,7 @@ class BitIndex3:
         r = requests.get(
             f'https://api.bitindex.network/api/v3/{self.network}/tx/{transaction_id}',
             headers=self.headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -143,6 +149,7 @@ class BitIndex3:
         r = requests.get(
             f'https://api.bitindex.network/api/v3/{self.network}/rawtx/{transaction_id}',
             headers=self.authorized_headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -157,6 +164,7 @@ class BitIndex3:
             f'https://api.bitindex.network/api/v3/{self.network}/status',
             params={'q': query},
             headers=self.authorized_headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -170,6 +178,7 @@ class BitIndex3:
         r = requests.get(
             f'https://api.bitindex.network/api/v3/{self.network}/block-index/{height}',
             headers=self.authorized_headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -183,6 +192,7 @@ class BitIndex3:
         r = requests.get(
             f'https://api.bitindex.network/api/v3/{self.network}/block/{block_hash}',
             headers=self.authorized_headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -196,6 +206,7 @@ class BitIndex3:
         r = requests.get(
             f'https://api.bitindex.network/api/v3/{self.network}/rawblock/{block_hash}',
             headers=self.authorized_headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -211,6 +222,7 @@ class BitIndex3:
             f'https://api.bitindex.network/api/v3/{self.network}/xpub/{xpub}/addrs/next',
             params={'reserveTime': reserve_time},
             headers=self.authorized_headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -241,6 +253,7 @@ class BitIndex3:
                 'address': address,
             },
             headers=self.authorized_headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -254,6 +267,7 @@ class BitIndex3:
         r = requests.get(
             f'https://api.bitindex.network/api/v3/{self.network}/xpub/{xpub}/status',
             headers=self.authorized_headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -269,6 +283,7 @@ class BitIndex3:
             f'https://api.bitindex.network/api/v3/{self.network}/xpub/{xpub}/utxo',
             params={'sort': sort},
             headers=self.authorized_headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -282,6 +297,7 @@ class BitIndex3:
         r = requests.get(
             f'https://api.bitindex.network/api/v3/{self.network}/xpub/{xpub}/txs',
             headers=self.authorized_headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -293,6 +309,7 @@ class BitIndex3:
         r = requests.get(
             f'https://api.bitindex.network/api/v3/{self.network}/webhook/endpoint',
             headers=self.authorized_headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -313,6 +330,7 @@ class BitIndex3:
                 'secret': secret,
             }),
             headers=self.authorized_headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -324,6 +342,7 @@ class BitIndex3:
         r = requests.get(
             f'https://api.bitindex.network/api/v3/{self.network}/webhook/monitored_addrs',
             headers=self.authorized_headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
@@ -338,6 +357,7 @@ class BitIndex3:
             f'https://api.bitindex.network/api/v3/{self.network}/webhook/monitored_addrs',
             data=json.dumps({'addr': address}),
             headers=self.authorized_headers,
+            timeout = self.timeout,
         )
         r.raise_for_status()
         return r.json()
